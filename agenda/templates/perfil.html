@@ -1,72 +1,105 @@
 {% extends 'base.html' %}
 {% block body %}
-<div class="row">
-    <div class="col-lg-12">
-        <h2 style='margin-top:0'>{{ perfil }}
-            {% if perfil.disponivel %}
-                <span class="text-success pull-right" aria-hidden="true">Disponivel</span>
-            {% else %}
-                <span class="text-danger pull-right" aria-hidden="true">Ocupado</span>
-            {% endif %}
-        </h2>
 
+<div class="modal fade" id="marcar" role="dialog">
+    <div class="modal-dialog">
+              <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Marcar</h4>
+            </div>
+            <form class="form" action="{% url 'marcarCompromisso' perfilLogado.escritorio.id %}" method="post">
+                <div class="modal-body">
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">x</button>
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    {% csrf_token %}
+                    <p>Cliente</p>
+                    <label for="id_cpf">CPF</label>
+                    <input type="text" id="id_cpf" name="cpf" class="form-control" placeholder="000.000.000-00" required>
+                    <input type="text" id="id_nome" name="nome" class="form-control" placeholder="Nome" required>
+                    <input type="text" id="id_telefone" name="telefone" class="form-control" placeholder="Telefone" required>
+                    <hr>
+                    <select class="form-control" id=id_profissional name="profissional">
+                        {% for profissional in profissionais %}
+                        <option>{{ profissional.nome }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="date" id="id_data" name="data" class="form-control" placeholder="Data" required>
+                    <input type="time" id="id_horario" name="horario" class="form-control" placeholder="Horario" required>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" value="Salvar" type="submit">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-9">
+        <h2>{{ perfil }}</h2>
+    </div>
+
+    <div class="col-md-3">
+        {% if perfil.disponivel %}
+        <h2><span class="text-success" aria-hidden="true">Disponivel</span></h2>
+        {% else %}
+        <h2><span class="text-danger" aria-hidden="true">Ocupado</span></h2>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10">
         <dl class="dl-horizontal">
             <dt>Profissão</dt>
             <dd>{{ perfil.profissao }}</dd>
             <dt>Telefone</dt>
             <dd>{{ perfil.telefone }}</dd>
-            {% if perfil.id is perfilLogado.id %}
-                <a href="#" class="btn btn-default pull-right">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-            {% endif %}
         </dl>
-        <a data-toggle="modal" data-target="#marcar" class="btn btn-info" role="button">Marcar compromisso</a>
-         <!-- Modal -->
-        <div class="modal fade" id="marcar" role="dialog">
-            <div class="modal-dialog">
-
-              <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Marcar</h4>
-                    </div>
-
-                    <form class="form" action="{% url 'marcarCompromisso' perfilLogado.escritorio.id %}"
-                        method="post">
-                        <div class="modal-body">
-                            {% if form.errors %}
-                                <div class="alert alert-danger">
-                                    <button type="button" class="close" data-dismiss="alert"
-                                            aria-hidden="true">x</button>
-                                    {{ form.non_field_errors }}
-                                </div>
-                            {% endif %}
-                            {% csrf_token %}
-                            <p>Cliente</p>
-                            <label for="id_cpf">CPF</label>
-                            <input type="text" id="id_cpf" name="cpf" class="form-control" placeholder="000.000.000-00" required>
-                            <input type="text" id="id_nome" name="nome" class="form-control" placeholder="Nome" required>
-                            <input type="text" id="id_telefone" name="telefone" class="form-control" placeholder="Telefone" required>
-                            <hr>
-                            <select class="form-control" id=id_profissional name="profissional">
-                                {% for profissional in profissionais %}
-                                    <option>{{ profissional.nome }}</option>
-                                {% endfor %}
-                            </select>
-                            <input type="date" id="id_data" name="data" class="form-control" placeholder="Data" required>
-                            <input type="time" id="id_horario" name="horario" class="form-control" placeholder="Horario" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-default" value="Salvar" type="submit">Salvar</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-
     </div>
+    <div class="col-md-2">
+        {% if perfil.id is perfilLogado.id %}
+            <a href="#" class="btn btn-default pull-right">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+
+<hr>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfi text-center" style="position:relative;">
+        <strong>
+            {% if compromissos %}
+            Compromissos
+            {% else %}
+            Você não tem compromissos!
+            {% endif %}
+        </strong>
+        <a data-toggle="modal" data-target="#marcar" class="btn btn-sm btn-info" style="position:absolute;right:15px;bottom:5px;" role="button">+</a>
+    </div>
+    {% if compromissos %}
+    <ul class="list-group">
+    {% for compromisso in compromissos %}
+        <li class="list-group-item">
+            <a href="{% url 'compromisso' compromisso.id %}">{{ compromisso.cliente }}</a>
+            <p class="pull-right">{{ compromisso.horario }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Não há nenhum compromisso para hoje</p>
+{% endif %}
 </div>
 {% endblock %}>

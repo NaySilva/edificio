@@ -85,6 +85,7 @@ def detalhesPerfil(request, perfil_id):
     escritorio = perfil.escritorio
     profissionais = Profissional.objects.filter(escritorio=escritorio)
     clientes = Cliente.objects.all()
+    compromissos = ItemAgenda.objects.filter(profissional=perfil, data=date.today())
     return render(request, 'perfil.html', {'perfil':perfil, 'perfilLogado':perfilLogado(),
                                            'escritorio':escritorio, 'profissionais':profissionais,
-                                           'clientes':clientes})
+                                           'clientes':clientes, 'compromissos':compromissos})
