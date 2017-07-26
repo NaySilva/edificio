@@ -49,7 +49,7 @@ class Sala(models.Model):
 class Profissional(models.Model):
     nome = models.CharField(max_length=120)
     telefone = models.CharField(max_length=10)
-    profissão = models.CharField(max_length=120)
+    profissao = models.CharField(max_length=120)
     disponivel = models.BooleanField()
     escritorio = models.ForeignKey(Escritorio, on_delete=models.CASCADE, related_name="profissionais")
 
@@ -72,15 +72,14 @@ class ItemAgenda(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='agenda_cliente')
     escritorio = models.ForeignKey(Escritorio, on_delete=models.CASCADE, related_name='agenda_escritorio')
     SITUACAO = (
-        ('A','Agendada'),
-        ('R','Realizada'),
-        ('C','Cancelada'),
+        ('A','Agendado'),
+        ('R','Realizado'),
+        ('C','Cancelado'),
     )
-    situacao = models.CharField(max_length=1, choices=SITUACAO)
+    situacao = models.CharField(max_length=1, choices=SITUACAO, default='A')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.situacao = 'A'
 
     def __str__(self):
         return '%s - %s (%s)' % (self.cliente, self.profissional, self.escritorio)
@@ -90,10 +89,10 @@ class ItemAgenda(models.Model):
         self.save(force_update=True)
 
     def remarcar(self, data, hora):
-        agenda = ItemAgenda()
-        agenda.profissional = self.profissional
-        agenda.cliente = self.cliente
-        agenda.horario = hora
-        agenda.data = data
-        agenda.save(force_insert=True)
+        ItemAgenda.objects.create(
+            profissional = self.profissional,
+            cliente = self.cliente,
+            horario = hora,
+            data = data,
+            escritorio = self.escritorio)
         self.mudar_situacao('C')

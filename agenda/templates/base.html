@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Muneris</title>
+    <link href="{% static 'styles/bootstrap.css' %}" rel="stylesheet"/>
+    <link href="{% static 'styles/main.css' %}" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+         <div class="header">
+            <ul class="nav nav-pills pull-right">
+                <li class=""><a href="{% url 'index' %}">Escritorio</a></li>
+                <li class=""><a href="{% url 'perfil' perfilLogado.id %}">Perfil</a></li>
+                <li class=""><a href="#">Logout</a></li>
+            </ul>
+            <h1></h1>
+        </div>
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

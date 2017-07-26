@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block body %}
+    <h2>Escritorio {{ escritorio.nome_escritorio }}</h2>
+    {% for sala in salas %}
+        <p>Sala {{ sala.numero }} - {{ sala.andar }}º andar</p>
+    {% endfor %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Profissionais</strong>
+        </div>
+        {% if profissionais %}
+            <ul class="list-group">
+            {% for profissional in profissionais %}
+                <li class="list-group-item">
+                    <a href="{% url 'perfil' profissional.id %}">{{ profissional.nome }}</a>
+                    {% if profissional.disponivel %}
+                        <span class="gglyphicon glyphicon-ok-circle text-success pull-right" aria-hidden="true"></span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-remove-circle text-danger pull-right" aria-hidden="true"></span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Não há nenhum profissional</p>
+        {% endif %}
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Compromissos de Hoje</strong>
+        </div>
+        {% if compromissos %}
+            <ul class="list-group">
+            {% for compromisso in compromissos %}
+                <li class="list-group-item">
+                    <a href="{% url 'compromisso' compromisso.id %}">{{ compromisso }}</a>
+                    <p class="pull-right">{{ compromisso.horario }}</p>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Não há nenhum compromisso para hoje</p>
+        {% endif %}
+    </div>
+{% endblock %}

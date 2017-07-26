@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="row">
+    <div class="col-lg-12">
+        <h2 style='margin-top:0'>Compromisso {{ compromisso.get_situacao_display }}</h2>
+        <dl class="dl-horizontal">
+            <dt>Cliente</dt>
+            <dd>{{ compromisso.cliente }}</dd>
+            <dt>Profissional</dt>
+            <dd>{{ compromisso.profissional }}</dd>
+            <dt>Escritorio</dt>
+            <dd>{{ compromisso.escritorio }}</dd>
+            <dt>Data</dt>
+            <dd>{{ compromisso.data }}</dd>
+            <dt>Horário</dt>
+            <dd>{{ compromisso.horario }}</dd>
+        </dl>
+        {% if compromisso.situacao != 'R' %}
+            <a data-toggle="modal" data-target="#remarcar" class="btn btn-info" role="button">Remarcar</a>
+        {% endif %}
+        {% if compromisso.situacao == 'A' %}
+            <a href="{% url 'cancelarCompromisso' compromisso.id %}" class="btn btn-info" role="button">Cancelar</a>
+            <a href="{% url 'concluirCompromisso' compromisso.id %}" class="btn btn-info" role="button">Concluir</a>
+        {% endif %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="remarcar" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Remarcar</h4>
+                    </div>
+
+                    <form class="form" action="{% url 'remarcarCompromisso' compromisso.id %}"
+                        method="post">
+                        <div class="modal-body">
+                            {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true">x</button>
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
+                            {% csrf_token %}
+                            <input type="date" id="id_data" name="data" class="form-control" placeholder="Data" required>
+                            <input type="time" id="id_horario" name="horario" class="form-control" placeholder="Horario" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-default" value="Salvar" type="submit">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
