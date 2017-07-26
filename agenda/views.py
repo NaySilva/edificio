@@ -30,6 +30,12 @@ def cancelarCompromisso(request, compromisso_id):
     compromisso.mudar_situacao('C')
     return redirect('compromisso', compromisso_id=compromisso_id)
 
+def iniciarCompromisso(request, compromisso_id):
+    compromisso = ItemAgenda.objects.get(id=compromisso_id)
+    compromisso.mudar_situacao('E')
+
+    return redirect('compromisso', compromisso_id=compromisso_id)
+
 def concluirCompromisso(request, compromisso_id):
     compromisso = ItemAgenda.objects.get(id=compromisso_id)
     compromisso.mudar_situacao('R')

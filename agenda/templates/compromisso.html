@@ -2,7 +2,7 @@
 {% block body %}
 <div class="row">
     <div class="col-lg-12">
-        <h2 style='margin-top:0'>Compromisso {{ compromisso.get_situacao_display }}</h2>
+        <h2 style='margin-top:0'>{{ compromisso.get_situacao_display }}</h2>
         <dl class="dl-horizontal">
             <dt>Cliente</dt>
             <dd>{{ compromisso.cliente }}</dd>
@@ -15,14 +15,20 @@
             <dt>Horário</dt>
             <dd>{{ compromisso.horario }}</dd>
         </dl>
-        {% if compromisso.situacao != 'R' %}
-            <a data-toggle="modal" data-target="#remarcar" class="btn btn-info" role="button">Remarcar</a>
+        {% if compromisso.profissional.id == perfilLogado.id %}
+            {% if compromisso.situacao == 'C' %}
+                <a data-toggle="modal" data-target="#remarcar" class="btn btn-info" role="button">Remarcar</a>
+            {% endif %}
+            {% if compromisso.situacao == 'A' %}
+                <a href="{% url 'cancelarCompromisso' compromisso.id %}" class="btn btn-info" role="button">Cancelar</a>
+                <a href="{% url 'iniciarCompromisso' compromisso.id %}" class="btn btn-info" role="button">Iniciar</a>
+                <a data-toggle="modal" data-target="#remarcar" class="btn btn-info" role="button">Remarcar</a>
+            {% endif %}
+            {% if compromisso.situacao == 'E' %}
+                <a href="{% url 'cancelarCompromisso' compromisso.id %}" class="btn btn-info" role="button">Cancelar</a>
+                <a href="{% url 'concluirCompromisso' compromisso.id %}" class="btn btn-info" role="button">Concluir</a>
+            {% endif %}
         {% endif %}
-        {% if compromisso.situacao == 'A' %}
-            <a href="{% url 'cancelarCompromisso' compromisso.id %}" class="btn btn-info" role="button">Cancelar</a>
-            <a href="{% url 'concluirCompromisso' compromisso.id %}" class="btn btn-info" role="button">Concluir</a>
-        {% endif %}
-
         <!-- Modal -->
         <div class="modal fade" id="remarcar" role="dialog">
             <div class="modal-dialog">

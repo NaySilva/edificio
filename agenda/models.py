@@ -7,7 +7,7 @@ from django.db import models
 class Cliente(models.Model):
     nome = models.CharField(max_length=120)
     telefone = models.CharField(max_length=10)
-    cpf = models.IntegerField(11)
+    cpf = models.CharField(max_length=11)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -75,6 +75,7 @@ class ItemAgenda(models.Model):
         ('A','Agendado'),
         ('R','Realizado'),
         ('C','Cancelado'),
+        ('E','Em Andamento'),
     )
     situacao = models.CharField(max_length=1, choices=SITUACAO, default='A')
 
