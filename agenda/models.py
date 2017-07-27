@@ -50,18 +50,22 @@ class Profissional(models.Model):
     nome = models.CharField(max_length=120)
     telefone = models.CharField(max_length=10)
     profissao = models.CharField(max_length=120)
-    disponivel = models.BooleanField()
     escritorio = models.ForeignKey(Escritorio, on_delete=models.CASCADE, related_name="profissionais")
+    STATUS = (
+        ('A', 'Ausente'),
+        ('D', 'Disponivel'),
+        ('O', 'Ocupado'),
+    )
+    status = models.CharField(max_length=1, choices=STATUS, default='A')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.disponivel = False
 
     def __str__(self):
         return 'Profissional %s' % (self.nome)
 
-    def mudar_status(self):
-        self.disponivel = not self.disponivel
+    def mudar_status(self, opcao):
+        self.status = opcao
         self.save(force_update=True)
 
 

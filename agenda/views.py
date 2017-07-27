@@ -33,12 +33,13 @@ def cancelarCompromisso(request, compromisso_id):
 def iniciarCompromisso(request, compromisso_id):
     compromisso = ItemAgenda.objects.get(id=compromisso_id)
     compromisso.mudar_situacao('E')
-
+    compromisso.profissional.mudar_status(False)
     return redirect('compromisso', compromisso_id=compromisso_id)
 
 def concluirCompromisso(request, compromisso_id):
     compromisso = ItemAgenda.objects.get(id=compromisso_id)
     compromisso.mudar_situacao('R')
+    compromisso.profissional.mudar_status(True)
     return redirect('compromisso', compromisso_id=compromisso_id)
 
 
@@ -95,3 +96,14 @@ def detalhesPerfil(request, perfil_id):
     return render(request, 'perfil.html', {'perfil':perfil, 'perfilLogado':perfilLogado(),
                                            'escritorio':escritorio, 'profissionais':profissionais,
                                            'clientes':clientes, 'compromissos':compromissos})
+
+
+def ficarAusente(request, perfil_id):
+    perfil = Profissional.objects.get(id=perfil_id)
+    perfil.mudar_status('A')
+    return redirect('perfil', perfil_id=perfil_id)
+
+def ficarPresente(request, perfil_id):
+    perfil = Profissional.objects.get(id=perfil_id)
+    perfil.mudar_status('D')
+    return redirect('perfil', perfil_id=perfil_id)

@@ -48,31 +48,34 @@
     </div>
 
     <div class="col-md-3">
-        {% if perfil.disponivel %}
+        {% if perfil.status == 'D' %}
         <h2><span class="text-success" aria-hidden="true">Disponivel</span></h2>
-        {% else %}
+        {% elif perfil.status == 'O' %}
         <h2><span class="text-danger" aria-hidden="true">Ocupado</span></h2>
+        {% else %}
+        <h2><span class="text-muted" aria-hidden="true">Ausente</span></h2>
         {% endif %}
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-10">
-        <dl class="dl-horizontal">
-            <dt>Profissão</dt>
-            <dd>{{ perfil.profissao }}</dd>
-            <dt>Telefone</dt>
-            <dd>{{ perfil.telefone }}</dd>
-        </dl>
-    </div>
-    <div class="col-md-2">
-        {% if perfil.id is perfilLogado.id %}
-            <a href="#" class="btn btn-default pull-right">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-        {% endif %}
-    </div>
-</div>
+
+<dl class="dl-horizontal">
+    <dt>Profissão</dt>
+    <dd>{{ perfil.profissao }}</dd>
+    <dt>Telefone</dt>
+    <dd>{{ perfil.telefone }}</dd>
+</dl>
+
+{% if perfil.id is perfilLogado.id %}
+    <a href="#" class="btn btn-info" role="button">Editar perfil</a>
+    {% if perfil.status == 'D' %}
+        <a href="{% url 'ficarAusente' perfil.id %}" class="btn btn-info" role="button">Ficar ausente</a>
+    {% elif perfil.status == 'A' %}
+        <a href="{% url 'ficarPresente' perfil.id %}" class="btn btn-info" role="button">Ficar presente</a>
+    {% endif %}
+{% endif %}
+
+
 
 
 <hr>

@@ -13,11 +13,6 @@
             {% for profissional in profissionais %}
                 <li class="list-group-item">
                     <a href="{% url 'perfil' profissional.id %}">{{ profissional.nome }}</a>
-                    {% if profissional.disponivel %}
-                        <span class="gglyphicon glyphicon-ok-circle text-success pull-right" aria-hidden="true"></span>
-                    {% else %}
-                        <span class="glyphicon glyphicon-remove-circle text-danger pull-right" aria-hidden="true"></span>
-                    {% endif %}
                 </li>
             {% endfor %}
             </ul>
