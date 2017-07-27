@@ -1,5 +1,9 @@
 {% extends "base_usuario.html" %}
 {% block body %}
+    <div class="header">
+            <ul class="nav nav-pills pull-right">
+                <li class=""><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
     <div class="jumbotron">
         <h1>Bem vindo!</h1>
         <p>Você pode conectar o seu escritório e virar o gerente virtual ou

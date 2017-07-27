@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^perfil/(?P<perfil_id>\d+)$', views.detalhesPerfil, name='perfil'),
     url(r'^perfil/(?P<perfil_id>\d+)/ficarAusente$', views.ficarAusente, name='ficarAusente'),
     url(r'^perfil/(?P<perfil_id>\d+)/ficarPresente$', views.ficarPresente, name='ficarPresente'),
+    url(r'^perfil/excluir$', views.excluirPerfil, name='excluirPerfil'),
     url(r'^agenda$', views.detalhesAgenda, name='agenda'),
     url(r'^agenda/filter=(?P<filter>\w+)$', views.detalhesAgenda, name='filtroAgenda'),
 ]

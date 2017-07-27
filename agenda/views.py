@@ -98,6 +98,20 @@ def removerProfissional(request, profissional_id):
     return redirect('gerenciar')
 
 @login_required
+def excluirPerfil(request):
+    profissional = perfilLogado(request)
+    escritorio = profissional.escritorio
+    profissional.usuario.delete()
+    profissional.delete()
+    profissional = Profissional.objects.filter(escritorio=escritorio).first()
+    if profissional:
+        profissional.gerente = True
+        profissional.save(force_update=True)
+    else:
+        escritorio.delete()
+    return redirect('login')
+
+@login_required
 def removerSala(request, sala_id):
     sala = Sala.objects.get(id=sala_id)
     sala.escritorio = None

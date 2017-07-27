@@ -97,12 +97,14 @@
 </dl>
 
 {% if perfil.id is perfilLogado.id %}
-        <a data-toggle="modal" data-target="#editar" class="btn btn-info" role="button">Editar Perfil</a>
+    <a data-toggle="modal" data-target="#editar" class="btn btn-info" role="button">Editar Perfil</a>
     {% if perfil.status == 'D' %}
         <a href="{% url 'ficarAusente' perfil.id %}" class="btn btn-info" role="button">Ficar ausente</a>
     {% elif perfil.status == 'A' %}
         <a href="{% url 'ficarPresente' perfil.id %}" class="btn btn-info" role="button">Ficar presente</a>
     {% endif %}
+    <a href="{% url 'excluirPerfil' %}" class="btn btn-info" role="button">Excluir Perfil</a>
+
 {% endif %}
 
 
