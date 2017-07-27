@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="modal fade" id="adicionar" role="dialog">
+    <div class="modal-dialog">
+              <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Adicionar</h4>
+            </div>
+            <form class="form" action="{% url 'adicionarProfissional' %}" method="post">
+                <div class="modal-body">
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">x</button>
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    {% csrf_token %}
+                    <input type="text" id="id_username" name="username" class="form-control" placeholder="Username" required>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" value="Salvar" type="submit">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="adicionarSala" role="dialog">
+    <div class="modal-dialog">
+              <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Adicionar</h4>
+            </div>
+            <form class="form" action="{% url 'adicionarSala' %}" method="post">
+                <div class="modal-body">
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">x</button>
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    {% csrf_token %}
+                    <input type="text" id="id_numero" name="numero" class="form-control" placeholder="Numero da sala" required>
+                    <input type="text" id="id_andar" name="andar" class="form-control" placeholder="Andar da sala" required>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" value="Salvar" type="submit">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading clearfi" style="position:relative;">
+        <strong>
+            Salas
+        </strong>
+        <a data-toggle="modal" data-target="#adicionarSala" class="btn btn-sm btn-info" style="position:absolute;right:15px;bottom:5px;" role="button">+</a>
+    </div>
+        <ul class="list-group">
+        {% for sala in salas %}
+            <li class="list-group-item">
+                Sala {{ sala.numero }} - {{ sala.andar }}º andar
+                {% if salas.count > 1 %}
+                    <a href="{% url 'removerSala' sala.id %}"><span class="pull-right">Remover</span></a>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading clearfi" style="position:relative;">
+        <strong>
+            Profissionais
+        </strong>
+        <a data-toggle="modal" data-target="#adicionar" class="btn btn-sm btn-info" style="position:absolute;right:15px;bottom:5px;" role="button">+</a>
+    </div>
+        {% if profissionais %}
+            <ul class="list-group">
+            {% for profissional in profissionais %}
+                <li class="list-group-item">
+                    <a href="{% url 'perfil' profissional.id %}">{{ profissional.nome }}</a>
+                    {% if profissional.id != perfilLogado.id %}
+                        <a href="{% url 'removerProfissional' profissional.id %}"><span class="pull-right">Remover</span></a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Não há nenhum profissional</p>
+        {% endif %}
+    </div>
+{% endblock %}

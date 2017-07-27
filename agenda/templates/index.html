@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% block body %}
     <h2>Escritorio {{ escritorio.nome_escritorio }}</h2>
+    {% if perfilLogado.gerente %}
+        <a href="{% url 'gerenciar' %}"><span class="pull-right">Gerenciar</span></a>
+    {% endif %}
     {% for sala in salas %}
         <p>Sala {{ sala.numero }} - {{ sala.andar }}º andar</p>
     {% endfor %}
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong>Profissionais</strong>

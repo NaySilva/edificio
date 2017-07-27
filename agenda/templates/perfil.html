@@ -122,7 +122,6 @@
         </strong>
         <a data-toggle="modal" data-target="#marcar" class="btn btn-sm btn-info" style="position:absolute;right:15px;bottom:5px;" role="button">+</a>
     </div>
-    {% if compromissos %}
     <ul class="list-group">
     {% for compromisso in compromissos %}
         <li class="list-group-item">
@@ -131,8 +130,5 @@
         </li>
     {% endfor %}
     </ul>
-{% else %}
-    <p>Não há nenhum compromisso para hoje</p>
-{% endif %}
 </div>
 {% endblock %}>

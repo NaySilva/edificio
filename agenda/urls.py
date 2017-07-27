@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from agenda import views
-from agenda.views import RemarcarCompromissoView, MarcarCompromissoView, EditarPerfilView, RegistrarEscritorioView
+from agenda.views import RemarcarCompromissoView, MarcarCompromissoView, EditarPerfilView, RegistrarEscritorioView, \
+    AdicionarProfissionalView, AdicionarSalaView
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -12,6 +13,11 @@ urlpatterns = [
     url(r'^compromisso/(?P<compromisso_id>\d+)/remarcar$', RemarcarCompromissoView.as_view(), name='remarcarCompromisso'),
     url(r'^escritorio/(?P<escritorio_id>\d+)/marcar$', MarcarCompromissoView.as_view(), name='marcarCompromisso'),
     url(r'^escritorio/registrar$', RegistrarEscritorioView.as_view(), name='registrarEscritorio'),
+    url(r'^escritorio/gerenciar$', views.gerenciarEscritorio, name='gerenciar'),
+    url(r'^escritorio/removerProfissional/(?P<profissional_id>\d+)$', views.removerProfissional, name='removerProfissional'),
+    url(r'^escritorio/removerSala/(?P<sala_id>\d+)$', views.removerSala, name='removerSala'),
+    url(r'^escritorio/adicionarProfissional$', AdicionarProfissionalView.as_view(), name='adicionarProfissional'),
+    url(r'^escritorio/adicionarSala$', AdicionarSalaView.as_view(), name='adicionarSala'),
     url(r'^perfil/(?P<perfil_id>\d+)/editar$', EditarPerfilView.as_view(), name='editarPerfil'),
     url(r'^perfil/(?P<perfil_id>\d+)$', views.detalhesPerfil, name='perfil'),
     url(r'^perfil/(?P<perfil_id>\d+)/ficarAusente$', views.ficarAusente, name='ficarAusente'),

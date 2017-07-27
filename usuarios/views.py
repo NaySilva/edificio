@@ -12,7 +12,7 @@ from usuarios.forms import RegistrarForm
 @login_required
 def novoProfissional(request):
     profissional = perfilLogado(request)
-    if profissional.escritorio:
+    if profissional.escritorio != None:
         return redirect('index')
     return render(request, 'novo_profissional.html')
 
@@ -21,8 +21,6 @@ class RegistrarUsuarioView(View):
     template_name = 'registrar.html'
 
     def get(self, request):
-        if perfilLogado(request):
-            return redirect('index')
         return render(request, self.template_name)
 
     def post(self, request):

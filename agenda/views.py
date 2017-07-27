@@ -5,13 +5,18 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views import View
+from requests import request
 
-from agenda.forms import RemarcarForm, MarcarForm, EditarPerfilForm, RegistrarEscritorioForm
+from agenda.forms import RemarcarForm, MarcarForm, EditarPerfilForm, RegistrarEscritorioForm, AdicionarProfissionalForm, \
+    AdicionarSalaForm
 from agenda.models import Escritorio, Profissional, Sala, ItemAgenda, Cliente
 
 @login_required
 def index(request):
     perfil = perfilLogado(request)
+    print(perfil.escritorio)
+    if perfil.escritorio == None:
+        return redirect('novoProfissional')
     escritorio = perfil.escritorio
     profissionais = Profissional.objects.filter(escritorio=escritorio)
     salas = Sala.objects.filter(escritorio=escritorio)
@@ -66,6 +71,55 @@ class RemarcarCompromissoView(View):
             compromisso.remarcar(data=dados['data'],hora=dados['horario'])
             return redirect('index')
         return render(request, self.template_name, {'form': form, 'compromisso':compromisso, 'perfilLogado':perfilLogado(request)})
+
+class AdicionarProfissionalView(View):
+    template_name = 'gerenciar.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        form = AdicionarProfissionalForm(request.POST)
+        escritorio = perfilLogado(request).escritorio
+        if form.is_valid():
+            dados = form.cleaned_data
+            print(dados)
+            profissional = Profissional.objects.filter(usuario__username=dados['username']).first()
+            profissional.escritorio = escritorio
+            profissional.save(force_update=True)
+        return redirect('gerenciar')
+
+
+@login_required
+def removerProfissional(request, profissional_id):
+    profissional = Profissional.objects.get(id=profissional_id)
+    profissional.escritorio = None
+    profissional.save(force_update=True)
+    return redirect('gerenciar')
+
+@login_required
+def removerSala(request, sala_id):
+    sala = Sala.objects.get(id=sala_id)
+    sala.escritorio = None
+    sala.save(force_update=True)
+    return redirect('gerenciar')
+
+class AdicionarSalaView(View):
+    template_name = 'gerenciar.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        form = AdicionarSalaForm(request.POST)
+        escritorio = perfilLogado(request).escritorio
+        if form.is_valid():
+            dados = form.cleaned_data
+            print(dados)
+            Sala.objects.create(numero=dados['numero'],
+                            andar=dados['andar'],
+                            escritorio=escritorio)
+        return redirect('gerenciar')
 
 class EditarPerfilView(View):
     template_name = 'perfil.html'
@@ -148,19 +202,31 @@ def detalhesAgenda(request, filter='data'):
                                            'todosCompromissos':todosCompromissos,
                                            'perfilLogado': perfilLogado(request)})
 
+@login_required
+def gerenciarEscritorio(request):
+    escritorio = perfilLogado(request).escritorio
+    profissionais = Profissional.objects.filter(escritorio=escritorio)
+    salas = Sala.objects.filter(escritorio=escritorio)
+    return render(request, 'gerenciar.html', {'profissionais':profissionais,
+                                              'salas': salas,
+                                              'perfilLogado': perfilLogado(request)})
+
+
+
 class RegistrarEscritorioView(View):
     template_name = 'registrar_escritorio.html'
 
-    @login_required
     def get(self, request):
+        perfil = perfilLogado(request)
+        if perfil.escritorio != None:
+            redirect('index')
         return render(request, self.template_name)
 
-    @login_required
     def post(self, request):
         form = RegistrarEscritorioForm(request.POST)
         if form.is_valid():
             dados = form.cleaned_data
-            escritorio = Escritorio.objects.create(nome=dados['nome'],
+            escritorio = Escritorio.objects.create(nome_escritorio=dados['nome'],
                                                    servico=dados['servico'])
             Sala.objects.create(numero=dados['numero'],
                                       andar=dados['andar'],
