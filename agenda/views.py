@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.views import View
 
-from agenda.forms import RemarcarForm, MarcarForm
+from agenda.forms import RemarcarForm, MarcarForm, EditarPerfilForm
 from agenda.models import Escritorio, Profissional, Sala, ItemAgenda, Cliente
 
 
@@ -59,6 +59,23 @@ class RemarcarCompromissoView(View):
             compromisso.remarcar(data=dados['data'],hora=dados['horario'])
             return redirect('index')
         return render(request, self.template_name, {'form': form, 'compromisso':compromisso, 'perfilLogado':perfilLogado()})
+
+class EditarPerfilView(View):
+    template_name = 'perfil.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request, perfil_id):
+        form = EditarPerfilForm(request.POST)
+        perfil = Profissional.objects.get(id=perfil_id)
+        if form.is_valid():
+            dados = form.cleaned_data
+            perfil.editar_perfil(nome = dados['nome'],
+                                 profissao = dados['profissao'],
+                                 telefone = dados['telefone'])
+            return redirect('perfil', perfil_id=perfil_id)
+        return render(request, self.template_name, {'form': form, 'perfil':perfil, 'perfilLogado':perfilLogado()})
 
 class MarcarCompromissoView(View):
 

@@ -41,6 +41,36 @@
     </div>
 </div>
 
+<div class="modal fade" id="editar" role="dialog">
+    <div class="modal-dialog">
+              <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar Perfil</h4>
+            </div>
+            <form class="form" action="{% url 'editarPerfil' perfil.id %}" method="post">
+                <div class="modal-body">
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">x</button>
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    {% csrf_token %}
+                    <input type="text" id="id_nome_prof" name="nome" class="form-control" placeholder="Nome" required>
+                    <input type="text" id="id_profissao" name="profissao" class="form-control" placeholder="Profissao" required>
+                    <input type="text" id="id_telefone_prof" name="telefone" class="form-control" placeholder="Telefone" required>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" value="Salvar" type="submit">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="row">
 
     <div class="col-md-9">
@@ -67,7 +97,7 @@
 </dl>
 
 {% if perfil.id is perfilLogado.id %}
-    <a href="#" class="btn btn-info" role="button">Editar perfil</a>
+        <a data-toggle="modal" data-target="#editar" class="btn btn-info" role="button">Editar Perfil</a>
     {% if perfil.status == 'D' %}
         <a href="{% url 'ficarAusente' perfil.id %}" class="btn btn-info" role="button">Ficar ausente</a>
     {% elif perfil.status == 'A' %}

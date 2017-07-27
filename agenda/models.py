@@ -68,6 +68,12 @@ class Profissional(models.Model):
         self.status = opcao
         self.save(force_update=True)
 
+    def editar_perfil(self, nome, profissao, telefone):
+        self.nome = nome
+        self.profissao = profissao
+        self.telefone = telefone
+        self.save(force_update=True)
+
 
 class ItemAgenda(models.Model):
     profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE, related_name='agenda_profissional')
