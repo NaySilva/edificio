@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block body %}
+<h3>Proximos compromissos</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Profissional</th>
+            <th>Data</th>
+            <th>Horario</th>
+            <th>Link</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for compromisso in proxCompromissos %}
+            <tr>
+                <td>{{ compromisso.cliente.nome }}</td>
+                <td>{{ compromisso.profissional.nome }}</td>
+                <td>{{ compromisso.data }}</td>
+                <td>{{ compromisso.horario }}</td>
+                <td><a href="{% url 'compromisso' compromisso.id %}"><span class="glyphicon glyphicon-link"></span></a></td>
+            </tr>
+        {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+
+<h3>Todos compromissos</h3>
+<div class="input-group">
+    <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle pull-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ordenar por <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'filtroAgenda' 'data' %}">Data e hora</a></li>
+                <li><a href="{% url 'filtroAgenda' 'cliente__nome' %}">Cliente</a></li>
+                <li><a href="{% url 'filtroAgenda' 'profissional__nome' %}">Profissional</a></li>
+                <li><a href="{% url 'filtroAgenda' 'situacao' %}">Situação</a></li>
+            </ul>
+    </div><!-- /btn-group -->
+</div><!-- /input-group -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Profissional</th>
+            <th>Data</th>
+            <th>Horario</th>
+            <th>Situacao</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for compromisso in todosCompromissos %}
+            <tr>
+                <td>{{ compromisso.cliente.nome }}</td>
+                <td>{{ compromisso.profissional.nome }}</td>
+                <td>{{ compromisso.data }}</td>
+                <td>{{ compromisso.horario }}</td>
+                <td>{{ compromisso.get_situacao_display }}</td>
+                <td><a href="{% url 'compromisso' compromisso.id %}"><span class="glyphicon glyphicon-link"></span></a></td>
+            </tr>
+        {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

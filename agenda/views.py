@@ -124,3 +124,13 @@ def ficarPresente(request, perfil_id):
     perfil = Profissional.objects.get(id=perfil_id)
     perfil.mudar_status('D')
     return redirect('perfil', perfil_id=perfil_id)
+
+def detalhesAgenda(request, filter='data'):
+    escritorio = perfilLogado().escritorio
+    proximosCompromissos = ItemAgenda.objects.filter(escritorio=escritorio, situacao='A').order_by('data', 'horario')
+    todosCompromissos = ItemAgenda.objects.filter(escritorio=escritorio).order_by(filter, 'data', 'horario')
+    return render(request, 'agenda.html', {'proxCompromissos':proximosCompromissos,
+                                           'todosCompromissos':todosCompromissos,
+                                           'perfilLogado': perfilLogado()})
+
+
