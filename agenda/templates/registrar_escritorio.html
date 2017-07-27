@@ -1,0 +1,29 @@
+{% extends "base_usuario.html" %}
+{% block body %}
+    <form class="form-signin" action="{% url 'registrarEscritorio' %}"
+    method="post">
+        {% csrf_token %}
+        <h2 class="form-signin-heading">Conecte seu escritório</h2>
+        <input type="text" id="id_nome" name="nome"
+        class="form-control" placeholder="Nome " required>
+        <input type="text" id="id_servico" name="servico"
+        class="form-control" placeholder="Serviço " required>
+        <hr>
+        <p>Sala principal *</p>
+        <input type="text" id="id_numero" name="numero"
+        class="form-control" placeholder="Numero da sala" required>
+        <input type="text" id="id_andar" name="andar"
+        class="form-control" placeholder="Andar do predio" required>
+        <p>* Você pode adicionar outras salas depois</p>
+        <hr />
+        <button class="btn  btn-lg btn-primary btn-block"
+        type="submit" value="Login">Conectar</button>
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">x</button>
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}

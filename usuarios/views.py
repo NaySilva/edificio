@@ -11,13 +11,15 @@ from usuarios.forms import RegistrarForm
 def novoProfissional(request):
     profissional = perfilLogado()
     if profissional.escritorio:
-        redirect('index')
+        return redirect('index')
     return render(request, 'novo_profissional.html')
 
 class RegistrarUsuarioView(View):
     template_name = 'registrar.html'
-
+    perfil = perfilLogado()
     def get(self, request):
+        if self.perfil:
+            return redirect('index')
         return render(request, self.template_name)
 
     def post(self, request):

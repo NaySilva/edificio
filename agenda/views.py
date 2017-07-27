@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.views import View
 
-from agenda.forms import RemarcarForm, MarcarForm, EditarPerfilForm
+from agenda.forms import RemarcarForm, MarcarForm, EditarPerfilForm, RegistrarEscritorioForm
 from agenda.models import Escritorio, Profissional, Sala, ItemAgenda, Cliente
 
 
@@ -19,7 +19,7 @@ def index(request):
                                          'compromissos':compromissos, 'perfilLogado':perfil})
 
 def perfilLogado():
-    return Profissional.objects.get(id=1)
+    return Profissional.objects.all().first()
 
 def detalhesDoCompromisso(request, compromisso_id):
     compromisso = ItemAgenda.objects.get(id=compromisso_id)
@@ -134,3 +134,26 @@ def detalhesAgenda(request, filter='data'):
                                            'perfilLogado': perfilLogado()})
 
 
+class RegistrarEscritorioView(View):
+    template_name = 'registrar_escritorio.html'
+    perfil = perfilLogado()
+
+    def get(self, request):
+        if self.perfil.escritorio:
+            return redirect('index')
+        return render(request, self.template_name)
+
+    def post(self, request):
+        form = RegistrarEscritorioForm(request.POST)
+        if form.is_valid():
+            dados = form.cleaned_data
+            escritorio = Escritorio.objects.create(nome=dados['nome'],
+                                                   servico=dados['servico'])
+            Sala.objects.create(numero=dados['numero'],
+                                      andar=dados['andar'],
+                                      escritorio = escritorio)
+            self.perfil.escritorio = escritorio
+            self.perfil.gerente = True
+            self.perfil.save(force_update=True)
+            return redirect('index')
+        return render(request, self.template_name, {'form': form})

@@ -83,7 +83,7 @@ class Profissional(models.Model):
 
 
 class ItemAgenda(models.Model):
-    profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE, related_name='agenda_profissional')
+    profissional = models.ForeignKey(Profissional, on_delete=models.CASCADE, related_name='agenda_profissionais')
     horario = models.TimeField()
     data = models.DateField()
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='agenda_cliente')
