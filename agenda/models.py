@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -50,13 +51,19 @@ class Profissional(models.Model):
     nome = models.CharField(max_length=120)
     telefone = models.CharField(max_length=10)
     profissao = models.CharField(max_length=120)
-    escritorio = models.ForeignKey(Escritorio, on_delete=models.CASCADE, related_name="profissionais")
+    escritorio = models.ForeignKey(Escritorio, on_delete=models.CASCADE, related_name="profissionais", null=True)
+    gerente = models.BooleanField(default=False)
     STATUS = (
         ('A', 'Ausente'),
         ('D', 'Disponivel'),
         ('O', 'Ocupado'),
     )
     status = models.CharField(max_length=1, choices=STATUS, default='A')
+    usuario = models.OneToOneField(User, related_name="profissional", on_delete=models.CASCADE)
+
+    @property
+    def email(self):
+        return self.usuario.email
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
