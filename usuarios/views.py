@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
@@ -8,17 +9,19 @@ from agenda.models import Profissional
 from agenda.views import perfilLogado
 from usuarios.forms import RegistrarForm
 
+@login_required
 def novoProfissional(request):
-    profissional = perfilLogado()
+    profissional = perfilLogado(request)
     if profissional.escritorio:
         return redirect('index')
     return render(request, 'novo_profissional.html')
 
+
 class RegistrarUsuarioView(View):
     template_name = 'registrar.html'
-    perfil = perfilLogado()
+
     def get(self, request):
-        if self.perfil:
+        if perfilLogado(request):
             return redirect('index')
         return render(request, self.template_name)
 
@@ -26,15 +29,14 @@ class RegistrarUsuarioView(View):
         form = RegistrarForm(request.POST)
         if form.is_valid():
             dados = form.cleaned_data
-            usuario = User.objects.create(username=dados['nome'],
+            usuario = User.objects.create_user(username=dados['nome'].replace(" ", "_").lower(),
                                       email=dados['email'],
                                       password=dados['senha'])
 
-            profissional = Profissional.objects.create(nome=dados['nome'],
-                                                       telefone=dados['telefone'],
-                                                       profissao=dados['profissao'],
+            Profissional.objects.create(nome=dados['nome'],
+                                        telefone=dados['telefone'],
+                                        profissao=dados['profissao'],
                                                        usuario=usuario)
-            print(profissional)
-            print(usuario)
-            return redirect('novoProfissional')
+
+            return redirect('login')
         return render(request, self.template_name, {'form': form})
