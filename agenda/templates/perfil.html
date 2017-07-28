@@ -20,16 +20,12 @@
                     {% endif %}
                     {% csrf_token %}
                     <p>Cliente</p>
-                    <label for="id_cpf">CPF</label>
-                    <input type="text" id="id_cpf" name="cpf" class="form-control" placeholder="000.000.000-00" required>
+                    <input type="text" id="id_cpf" name="cpf" class="form-control" placeholder="CPF" required>
                     <input type="text" id="id_nome" name="nome" class="form-control" placeholder="Nome" required>
                     <input type="text" id="id_telefone" name="telefone" class="form-control" placeholder="Telefone" required>
                     <hr>
-                    <select class="form-control" id=id_profissional name="profissional">
-                        {% for profissional in profissionais %}
-                        <option>{{ profissional.nome }}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="hidden" class="form-control" id="id_profissional" name="profissional" value="{{ perfilLogado.nome }}">
+                    </input>
                     <input type="date" id="id_data" name="data" class="form-control" placeholder="Data" required>
                     <input type="time" id="id_horario" name="horario" class="form-control" placeholder="Horario" required>
                 </div>
@@ -79,11 +75,11 @@
 
     <div class="col-md-3">
         {% if perfil.status == 'D' %}
-        <h2><span class="text-success" aria-hidden="true">Disponivel</span></h2>
+        <h2><span class="text-success" aria-hidden="true">{{ perfil.get_status_display }}</span></h2>
         {% elif perfil.status == 'O' %}
-        <h2><span class="text-danger" aria-hidden="true">Ocupado</span></h2>
+        <h2><span class="text-danger" aria-hidden="true">{{ perfil.get_status_display }}</span></h2>
         {% else %}
-        <h2><span class="text-muted" aria-hidden="true">Ausente</span></h2>
+        <h2><span class="text-muted" aria-hidden="true">{{ perfil.get_status_display }}</span></h2>
         {% endif %}
     </div>
 </div>
@@ -99,9 +95,9 @@
 {% if perfil.id is perfilLogado.id %}
     <a data-toggle="modal" data-target="#editar" class="btn btn-info" role="button">Editar Perfil</a>
     {% if perfil.status == 'D' %}
-        <a href="{% url 'ficarAusente' perfil.id %}" class="btn btn-info" role="button">Ficar ausente</a>
+        <a href="{% url 'ficarAusente' perfil.id %}" class="btn btn-info" role="button">Ficar Ausente</a>
     {% elif perfil.status == 'A' %}
-        <a href="{% url 'ficarPresente' perfil.id %}" class="btn btn-info" role="button">Ficar presente</a>
+        <a href="{% url 'ficarPresente' perfil.id %}" class="btn btn-info" role="button">Ficar Presente</a>
     {% endif %}
     <a href="{% url 'excluirPerfil' %}" class="btn btn-info" role="button">Excluir Perfil</a>
 
@@ -117,12 +113,14 @@
     <div class="panel-heading clearfi" style="position:relative;">
         <strong>
             {% if compromissos %}
-            Compromissos
+            Compromissos de hoje
             {% else %}
-            Você não tem compromissos!
+            Não há compromissos para hoje.
             {% endif %}
         </strong>
-        <a data-toggle="modal" data-target="#marcar" class="btn btn-sm btn-info" style="position:absolute;right:15px;bottom:5px;" role="button">+</a>
+        {% if perfil.id == perfilLogado.id %}
+            <a data-toggle="modal" data-target="#marcar" class="btn btn-sm btn-info" style="position:absolute;right:15px;bottom:5px;" role="button">+</a>
+        {% endif %}
     </div>
     <ul class="list-group">
     {% for compromisso in compromissos %}

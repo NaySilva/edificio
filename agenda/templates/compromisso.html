@@ -5,9 +5,13 @@
         <h2 style='margin-top:0'>{{ compromisso.get_situacao_display }}</h2>
         <dl class="dl-horizontal">
             <dt>Cliente</dt>
-            <dd>{{ compromisso.cliente }}</dd>
+            <dd>{{ compromisso.cliente.nome }}</dd>
+            <dd>CPF: {{ compromisso.cliente.cpf }}</dd>
+            <dd>Telefone:{{ compromisso.cliente.telefone }}</dd>
             <dt>Profissional</dt>
-            <dd>{{ compromisso.profissional }}</dd>
+            <dd>{{ compromisso.profissional.nome }}</dd>
+            <dd>Profissão: {{ compromisso.profissional.profissao }}</dd>
+            <dd>Telefone: {{ compromisso.profissional.telefone }}</dd>
             <dt>Escritorio</dt>
             <dd>{{ compromisso.escritorio }}</dd>
             <dt>Data</dt>
@@ -21,7 +25,9 @@
             {% endif %}
             {% if compromisso.situacao == 'A' %}
                 <a href="{% url 'cancelarCompromisso' compromisso.id %}" class="btn btn-info" role="button">Cancelar</a>
-                <a href="{% url 'iniciarCompromisso' compromisso.id %}" class="btn btn-info" role="button">Iniciar</a>
+                {% if perfilLogado.status == 'D' %}
+                    <a href="{% url 'iniciarCompromisso' compromisso.id %}" class="btn btn-info" role="button">Iniciar</a>
+                {% endif %}
                 <a data-toggle="modal" data-target="#remarcar" class="btn btn-info" role="button">Remarcar</a>
             {% endif %}
             {% if compromisso.situacao == 'E' %}

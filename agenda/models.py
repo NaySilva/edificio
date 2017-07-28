@@ -55,7 +55,7 @@ class Profissional(models.Model):
     gerente = models.BooleanField(default=False)
     STATUS = (
         ('A', 'Ausente'),
-        ('D', 'Disponivel'),
+        ('D', 'Disponível'),
         ('O', 'Ocupado'),
     )
     status = models.CharField(max_length=1, choices=STATUS, default='A')
@@ -100,7 +100,7 @@ class ItemAgenda(models.Model):
         super().__init__(*args, **kwargs)
 
     def __str__(self):
-        return '%s - %s (%s)' % (self.cliente, self.profissional, self.escritorio)
+        return '%s - %s' % (self.cliente, self.profissional)
 
     def mudar_situacao(self, opcao):
         self.situacao = opcao

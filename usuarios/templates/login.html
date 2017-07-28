@@ -1,7 +1,7 @@
 {% extends 'base_usuario.html' %}
 {% block body %}
-    <form class="form-signin" role="form" action="{% url 'login' %}"
-          method="post">
+<div class="row">
+    <form class="form-signin" role="form" action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <h2 class="form-signin-heading">Login</h2>
         <input type="text" id="username" name="username"
@@ -23,4 +23,5 @@
         {% endif %}
         <a href="{% url 'registrar' %}">Registre-se</a>
     </form>
+</div>
 {% endblock %}

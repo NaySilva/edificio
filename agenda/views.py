@@ -20,7 +20,7 @@ def index(request):
     escritorio = perfil.escritorio
     profissionais = Profissional.objects.filter(escritorio=escritorio)
     salas = Sala.objects.filter(escritorio=escritorio)
-    compromissos = ItemAgenda.objects.filter(escritorio=escritorio, data=date.today())
+    compromissos = ItemAgenda.objects.filter(escritorio=escritorio, data=date.today()).order_by('horario')
     return render(request,'index.html', {'escritorio':escritorio, 'profissionais':profissionais, 'salas':salas,
                                          'compromissos':compromissos, 'perfilLogado':perfil})
 
@@ -37,20 +37,21 @@ def detalhesDoCompromisso(request, compromisso_id):
 def cancelarCompromisso(request, compromisso_id):
     compromisso = ItemAgenda.objects.get(id=compromisso_id)
     compromisso.mudar_situacao('C')
+    compromisso.profissional.mudar_status('D')
     return redirect('compromisso', compromisso_id=compromisso_id)
 
 @login_required
 def iniciarCompromisso(request, compromisso_id):
     compromisso = ItemAgenda.objects.get(id=compromisso_id)
     compromisso.mudar_situacao('E')
-    compromisso.profissional.mudar_status(False)
+    compromisso.profissional.mudar_status('O')
     return redirect('compromisso', compromisso_id=compromisso_id)
 
 @login_required
 def concluirCompromisso(request, compromisso_id):
     compromisso = ItemAgenda.objects.get(id=compromisso_id)
     compromisso.mudar_situacao('R')
-    compromisso.profissional.mudar_status(True)
+    compromisso.profissional.mudar_status('D')
     return redirect('compromisso', compromisso_id=compromisso_id)
 
 class RemarcarCompromissoView(View):
@@ -138,11 +139,9 @@ class AdicionarSalaView(View):
 class EditarPerfilView(View):
     template_name = 'perfil.html'
 
-    @login_required
     def get(self, request):
         return render(request, self.template_name)
 
-    @login_required
     def post(self, request, perfil_id):
         form = EditarPerfilForm(request.POST)
         perfil = Profissional.objects.get(id=perfil_id)
@@ -157,12 +156,9 @@ class EditarPerfilView(View):
 class MarcarCompromissoView(View):
 
     template_name = 'compromisso.html'
-
-    @login_required
     def get(self, request, *args, **kwargs):
         return render(request, 'perfil.html', {'perfilLogado': perfilLogado(request)})
 
-    @login_required
     def post(self, request, *args, **kwargs):
         form = MarcarForm(request.POST)
         escritorio_id = kwargs['escritorio_id']
@@ -171,7 +167,11 @@ class MarcarCompromissoView(View):
             dados = form.cleaned_data
             print(dados)
             cliente = Cliente.objects.filter(cpf=dados['cpf']).first()
-            if not cliente:
+            if cliente:
+                cliente.nome = dados['nome']
+                cliente.telefone = dados['telefone']
+                cliente.save(force_update=True)
+            else:
                 cliente = Cliente.objects.create(cpf=dados['cpf'],nome=dados['nome'],telefone=dados['telefone'])
             profissional = Profissional.objects.get(nome=dados['profissional'],escritorio=escritorio)
             compromisso = ItemAgenda.objects.create(cliente=cliente,
@@ -189,7 +189,7 @@ def detalhesPerfil(request, perfil_id):
     escritorio = perfil.escritorio
     profissionais = Profissional.objects.filter(escritorio=escritorio)
     clientes = Cliente.objects.all()
-    compromissos = ItemAgenda.objects.filter(profissional=perfil, data=date.today())
+    compromissos = ItemAgenda.objects.filter(profissional=perfil, data=date.today()).order_by('horario')
     return render(request, 'perfil.html', {'perfil':perfil, 'perfilLogado':perfilLogado(request),
                                            'escritorio':escritorio, 'profissionais':profissionais,
                                            'clientes':clientes, 'compromissos':compromissos})
