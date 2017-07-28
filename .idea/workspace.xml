@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21c5fdad-cc44-4b88-9464-56957371f4f9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/requisitos-django-tep-1" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/agenda/models.py" afterPath="$PROJECT_DIR$/agenda/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/agenda/templates/agenda.html" afterPath="$PROJECT_DIR$/agenda/templates/agenda.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/agenda/templates/base.html" afterPath="$PROJECT_DIR$/agenda/templates/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/agenda/templates/compromisso.html" afterPath="$PROJECT_DIR$/agenda/templates/compromisso.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/agenda/templates/gerenciar.html" afterPath="$PROJECT_DIR$/agenda/templates/gerenciar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/agenda/templates/perfil.html" afterPath="$PROJECT_DIR$/agenda/templates/perfil.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/agenda/views.py" afterPath="$PROJECT_DIR$/agenda/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/usuarios/templates/base_usuario.html" afterPath="$PROJECT_DIR$/usuarios/templates/base_usuario.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/usuarios/templates/login.html" afterPath="$PROJECT_DIR$/usuarios/templates/login.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,8 +28,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/agenda/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-36">
-              <caret line="39" column="44" lean-forward="false" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
+            <state relative-caret-position="396">
+              <caret line="63" column="19" lean-forward="true" selection-start-line="63" selection-start-column="19" selection-end-line="63" selection-end-column="19" />
               <folding>
                 <marker date="1501263903940" expanded="true" signature="7764:7765" ph="..." />
               </folding>
@@ -483,7 +474,14 @@
       <option name="project" value="LOCAL" />
       <updated>1501169927994</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="otimizando funcionalidades">
+      <created>1501263961751</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1501263961751</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -546,7 +544,8 @@
     <MESSAGE value="add login e logout" />
     <MESSAGE value="add funcionalidades de gerenciar escritorio" />
     <MESSAGE value="add funcionalidade remover perfil" />
-    <option name="LAST_COMMIT_MESSAGE" value="add funcionalidade remover perfil" />
+    <MESSAGE value="otimizando funcionalidades" />
+    <option name="LAST_COMMIT_MESSAGE" value="otimizando funcionalidades" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -929,8 +928,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/agenda/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-36">
-          <caret line="39" column="44" lean-forward="false" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
+        <state relative-caret-position="396">
+          <caret line="63" column="19" lean-forward="true" selection-start-line="63" selection-start-column="19" selection-end-line="63" selection-end-column="19" />
           <folding>
             <marker date="1501263903940" expanded="true" signature="7764:7765" ph="..." />
           </folding>

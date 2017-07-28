@@ -1,0 +1,26 @@
+[X] - Listar profissionais
+[X] - Listar compromissos do dia
+[X] - Compromissos podem ser:
+    [X] - cancelados
+    [X] - concluídos
+    [X] - remarcados
+    [X] - iniciados (colocados em andamento)
+[X] - Profissionais podem:
+    [X] - Marcar compromisso
+    [X] - Ver seu perfil
+    [X] - Editar seu perfil
+    [X] - Ver seus compromissos
+    [X] - Ficar ausente ou presente
+[X] - O status de um profissional muda automaticamente dependendo se tem um serviço em andamento ou não
+[X] - Inclusão de novos escritórios
+[X] - Remoção de escritório
+[X] - Login e logout
+[X] - Histórico dos compromissos do escritório
+[X] - Ordenação personalizados para a agenda
+[X] - Cadastrar profissionais
+[X] - Gerenciar escritorio
+    [X] - Incluir profissionais
+    [X] - Remover profissionais
+    [X] - Incluir salas
+    [X] - Remover salas
+
